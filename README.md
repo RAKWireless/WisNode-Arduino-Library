@@ -5,4 +5,4 @@ This repo is used for Arduino board + WisNode-LoRa RAK811 board.
 
 You can have a look at the tutorial document for more details:
 
-https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/WisNode-LoRa-Arduino%20Library%20Use%20Guide.pdf
+https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Get%20start%20with%20Arduino%20board-WisNode%20RAK811%20board.pdf
