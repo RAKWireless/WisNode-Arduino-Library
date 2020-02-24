@@ -33,9 +33,9 @@ class RAK811
   * Only applies to the firmware that the module programmed for the RAK811 AT command.
   * AT commands refer to: https://downloads.rakwireless.com/en/LoRa/RAK811/Application_Notes/Get_Start_with_RAK811_WisNode-LoRa.pdf
   */
-  String rk_getVersion(void);
+  bool rk_getVersion(void);
 
- /*
+ /*STDB
   * Get the frequency band of the module.
   * This feature request to receive at least 800 bytes buffer size.
   */
@@ -50,11 +50,9 @@ class RAK811
   void rk_sleep(int mode);
 
  /*
-  * Reset the module or reset the LoRaWAN or LoRaP2P protocol stack.
-  * mode  = 0: Reset and restart module.
-  * mode  = 1: Reset LoRaWAN or LoraP2P stack and Module will reload LoRa configuration from EEPROM.
+  * Reset the module.
   */
-  void rk_reset(int mode);
+  void rk_reset(void);
 
  /*
   * This command is used to set the interval time of sending data.
@@ -134,7 +132,7 @@ class RAK811
   */
  bool rk_joinLoRaNetwork(int timeout);
 
- /*
+ /*STDB
   * Get the Channels list at current region.
   * This feature request to receive at least 800 bytes buffer size if work at Region US915,AU915 or CN470
   */
@@ -187,13 +185,13 @@ class RAK811
   String rk_recvP2PData(void);
 
 
- /*
+ /*STDB
   * Check the device statistics.
   */
   String rk_checkDeviceStatus(void);
 
 
- /*
+ /*STDB
   * Set the module serial port parameters.Module restart effective
   * UartPort :UART Port number
   * Band : Serial baud rate.Supports baud rate: 9600  19200  38400  57600  115200  230400  460800  921600.
@@ -202,10 +200,11 @@ class RAK811
 
  /*
   * Send a raw command to the RAK811 module.
-  * Returns the raw string as received back from the RAK811.
+  * //Returns the raw string as received back from the RAK811.
+  * Return true,send OK
   * If the RAK811 replies with multiple line, only the first line will be returned.
   */
-  String sendRawCommand(String command);
+  bool sendRawCommand(String command);
 
   private:
   Stream& _serial;

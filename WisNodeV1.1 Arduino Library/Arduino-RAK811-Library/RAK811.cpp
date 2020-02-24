@@ -15,6 +15,7 @@ extern "C"
 #include "stdlib.h"
 }
 String ret = "";
+String command = "1234567890123456789012345678901234567890123456789012345678901234567890";
 /*
   @param serial Needs to be an already opened Stream ({Software/Hardware}Serial) to write to and read from.
 */
@@ -24,7 +25,7 @@ RAK811::RAK811(Stream &serial, Stream &serial1) : _serial(serial), _serial1(seri
   _serial1.setTimeout(1000);
 }
 
-String RAK811::rk_getVersion()
+bool RAK811::rk_getVersion()
 {
   ret = sendRawCommand(F("at+version"));
   ret.trim();
@@ -115,7 +116,8 @@ bool RAK811::rk_setRegion(int region)
       break;
   }
   _serial1.println("Current work region: "+REGION);
-  ret = sendRawCommand("at+set_config=lora:region:" + REGION);
+  sendRawCommand("at+set_config=lora:region:" + REGION);
+  ret = rk_recvData();
 #if defined DEBUG_MODE
   _serial1.println(ret);
 #endif
@@ -153,7 +155,8 @@ bool RAK811::rk_setSendinterval(int mode, int value)
     return false;
   }
 
-  ret = sendRawCommand("at+set_config=lora:send_interval:" + (String)mode + ":" + (String)value);
+  sendRawCommand("at+set_config=lora:send_interval:" + (String)mode + ":" + (String)value);
+  ret = rk_recvData();
   if (ret.indexOf("OK") > 0)
   {
     return true;
@@ -164,7 +167,7 @@ bool RAK811::rk_setSendinterval(int mode, int value)
   }
 }
 
-void RAK811::rk_reset(int mode)
+void RAK811::rk_reset(void)
 {
   sendRawCommand(F("at+set_config=device:restart"));
 }
@@ -174,22 +177,27 @@ bool RAK811::rk_setWorkingMode(int mode)
   switch (mode)
   {
     case 0:
-      ret = sendRawCommand(F("at+set_config=lora:work_mode:0")); //Set LoRaWAN Mode.
+      sendRawCommand(F("at+set_config=lora:work_mode:0")); //Set LoRaWAN Mode.
       break;
     case 1:
-      ret = sendRawCommand(F("at+set_config=lora:work_mode:1")); //Set LoRaP2P Mode.
+      sendRawCommand(F("at+set_config=lora:work_mode:1")); //Set LoRaP2P Mode.
       break;
     default:
       return false;
   }
-  if (ret.indexOf("OK") > 0)
+  
+  for(int i=0; i<10; i++)
   {
-    return true;
+    ret = rk_recvData();
+    // _serial1.println(ret);
+    if ((ret.indexOf("Initialization OK") >= 0) || (ret.indexOf("No switch work_mode") >= 0))
+    {
+      return true;
+    }
   }
-  else
-  {
-    return false;
-  }
+
+  return false;
+
 }
 
 bool RAK811::rk_setJoinMode(int mode)
@@ -197,14 +205,15 @@ bool RAK811::rk_setJoinMode(int mode)
   switch (mode)
   {
     case 0:
-      ret = sendRawCommand(F("at+set_config=lora:join_mode:0")); //join Network through OTAA mode.
+      sendRawCommand(F("at+set_config=lora:join_mode:0")); //join Network through OTAA mode.
       break;
     case 1:
-      ret = sendRawCommand(F("at+set_config=lora:join_mode:1")); //join Network through ABP mode.
+      sendRawCommand(F("at+set_config=lora:join_mode:1")); //join Network through ABP mode.
       break;
     default:
       return false;
   }
+  ret = rk_recvData();
   if (ret.indexOf("OK") > 0)
   {
     return true;
@@ -219,14 +228,23 @@ bool RAK811::rk_joinLoRaNetwork(int timeout)
 {
   String command = "at+join";  
   //  _serial1.println(command);
-  ret = sendRawCommand(command);
+  sendRawCommand(command);
+  ret = rk_recvData();
+  if (ret != NULL)
+  {
+    if (ret.indexOf("OK") > 0)
+      return true;
+    else if(ret.indexOf("ERROR") >= 0)
+      return false;
+  }
   for (int i = 0; i <= timeout/2; i++)
   {
-    ret = _serial.readStringUntil('\0');
-    ret.trim();
+    // ret = _serial.readStringUntil('\0');
+    // ret.trim();
+    ret = rk_recvData();
+    _serial1.print("<- " + ret);
     if (ret != NULL)
     {
-      _serial1.print("<- " + ret);
       if (ret.indexOf("OK") > 0)
         return true;
       else if(ret.indexOf("ERROR") >= 0)
@@ -239,7 +257,7 @@ bool RAK811::rk_joinLoRaNetwork(int timeout)
 
 bool RAK811::rk_initOTAA(String devEUI, String appEUI, String appKEY)
 {
-  String command = "";
+  // String command = "";
   if (devEUI.length() == 16)
   {
     _devEUI = devEUI;
@@ -267,17 +285,20 @@ bool RAK811::rk_initOTAA(String devEUI, String appEUI, String appKEY)
 
   command = "at+set_config=lora:dev_eui:" + _devEUI;
   //  _serial1.println(command);
-  ret = sendRawCommand(command);
+  sendRawCommand(command);
+  ret = rk_recvData();
   if (ret.indexOf("OK") > 0)
   {
     command = "at+set_config=lora:app_eui:" + _appEUI;
     //  _serial1.println(command);
-    ret = sendRawCommand(command);
+    sendRawCommand(command);
+    ret = rk_recvData();
     if (ret.indexOf("OK") > 0)
     {
       command = "at+set_config=lora:app_key:" + _appKEY;
       //  _serial1.println(command);
-      ret = sendRawCommand(command);
+      sendRawCommand(command);
+      ret = rk_recvData();
       if (ret.indexOf("OK") > 0)
       {
         return true;
@@ -290,7 +311,7 @@ bool RAK811::rk_initOTAA(String devEUI, String appEUI, String appKEY)
 
 bool RAK811::rk_initABP(String devADDR, String nwksKEY, String appsKEY)
 {
-  String command = "";
+  // String command = "";
   if (devADDR.length() == 8)
   {
     _devADDR = devADDR;
@@ -318,17 +339,20 @@ bool RAK811::rk_initABP(String devADDR, String nwksKEY, String appsKEY)
 
   command = "at+set_config=lora:dev_addr:" + _devADDR;
   //  _serial1.println(command);
-  ret = sendRawCommand(command);
+  sendRawCommand(command);
+  ret = rk_recvData();
   if (ret.indexOf("OK") > 0)
   {
     command = "at+set_config=lora:nwks_key:" + _nwksKEY;
     //  _serial1.println(command);
-    ret = sendRawCommand(command);
+    sendRawCommand(command);
+    ret = rk_recvData();
     if (ret.indexOf("OK") > 0)
     {
       command = "at+set_config=lora:apps_key:" + _appsKEY;
       //  _serial1.println(command);
-      ret = sendRawCommand(command);
+      sendRawCommand(command);
+      ret = rk_recvData();
       if (ret.indexOf("OK") > 0)
       {
         return true;
@@ -343,14 +367,15 @@ bool RAK811::rk_isConfirm(int type)
   switch (type)
   {
     case 0:
-      ret = sendRawCommand(F("at+set_config=lora:confirm:0")); //LoRa data send with unconfirm.
+      sendRawCommand(F("at+set_config=lora:confirm:0")); //LoRa data send with unconfirm.
       break;
     case 1:
-      ret = sendRawCommand(F("at+set_config=lora:confirm:1")); //LoRa data send with confirm.
+      sendRawCommand(F("at+set_config=lora:confirm:1")); //LoRa data send with confirm.
       break;
     default:
       return false;
   }
+  ret = rk_recvData();
   if (ret.indexOf("OK") > 0)
   {
     return true;
@@ -363,19 +388,12 @@ bool RAK811::rk_isConfirm(int type)
 
 bool RAK811::rk_sendData(int port, char *datahex)
 {
-  String command = "";
+  // String command = "";
   command = "at+send=lora:" + (String)port + ":" + datahex;
-  //  _serial1.println(command);
-  ret = sendRawCommand(command);
+  // _serial1.println(command);
+  sendRawCommand(command);
 
-  if (ret == command)
-  {
-    return true;
-  }
-  else
-  {
-    return false;
-  }    
+  return true;  
 }
 
 String RAK811::rk_recvData(void)
@@ -391,10 +409,11 @@ String RAK811::rk_recvData(void)
 
 bool RAK811::rk_initP2P(String FREQ, int SF, int BW, int CR, int PRlen, int PWR)
 {
-  String command = "";
+  // String command = "";
   command = "at+set_config=lorap2p:" + FREQ + "," + SF + "," + BW + "," + CR + "," + PRlen + "," + PWR;
   //  _serial1.println(command);
-  ret = sendRawCommand(command);
+  sendRawCommand(command);
+  ret = rk_recvP2PData();
   if (ret.indexOf("OK") > 0)
   {
     return true;
@@ -409,7 +428,7 @@ String RAK811::rk_recvP2PData(void)
 {
   ret = _serial.readStringUntil('\0');
   ret.trim();
-  delay(500);
+  // delay(500);
   return ret;
 }
 
@@ -418,30 +437,33 @@ bool RAK811::rk_sendP2PData(char *datahex)
   String DATAHEX = datahex;
   String command = "at+send=lorap2p:" + DATAHEX;
   //  _serial1.println(command);
-  ret = sendRawCommand(command);
-  if (ret.indexOf("OK") > 0)
-  {
-    return true;
-  }
-  else
-  {
-    return false;
-  }
+  sendRawCommand(command);
+  // ret = rk_recvP2PData();
+  // if (ret.indexOf("OK") > 0)
+  // {
+  //   return true;
+  // }
+  // else
+  // {
+  //   return false;
+  // }
+  return true;
 }
 
 String RAK811::rk_checkDeviceStatus(void)
 {
-  ret = sendRawCommand(F("at+get_config=device:status"));
-  ret.trim();
+  sendRawCommand(F("at+get_config=device:status"));
+  ret = rk_recvP2PData();
   return ret;
 }
 
 bool RAK811::rk_setUARTConfig(int UartPort, int Baud)
 {
-  String command = "";
+  // String command = "";
   command = "at+set_config=device:uart:" + (String)UartPort + ":" + (String)Baud;
   //  _serial1.println(command);
-  ret = sendRawCommand(command);
+  sendRawCommand(command);
+  ret = rk_recvData();
   if (ret.indexOf("OK") > 0)
   {
     return true;
@@ -452,7 +474,7 @@ bool RAK811::rk_setUARTConfig(int UartPort, int Baud)
   }
 }
 
-String RAK811::sendRawCommand(String command)
+bool RAK811::sendRawCommand(String command)
 {
   // delay(100);
   while (_serial.available())
@@ -466,12 +488,12 @@ String RAK811::sendRawCommand(String command)
   // delay(100);
   _serial.println(command);
   delay(200);
-  ret = _serial.readStringUntil('\0');
-  ret.trim();
+  // ret = _serial.readStringUntil('\0');
+  // ret.trim();
   // delay(100);
 #if defined DEBUG_MODE
   _serial1.println("-> " + command);
   _serial1.println("<- " + ret);
 #endif
-  return ret;
+  return true;
 }

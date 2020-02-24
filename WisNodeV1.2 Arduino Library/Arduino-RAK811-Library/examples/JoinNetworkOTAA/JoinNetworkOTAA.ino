@@ -18,8 +18,8 @@ String DevAddr = "260125D7";
 #endif
 #define TXpin 11   // Set the virtual serial port pins
 #define RXpin 10
-#define ATSerial Serial
-SoftwareSerial DebugSerial(RXpin,TXpin);    // Declare a virtual serial port
+#define DebugSerial Serial
+SoftwareSerial ATSerial(RXpin,TXpin);    // Declare a virtual serial port
 char buffer[]= "72616B776972656C657373";
 
 bool InitLoRaWAN(void);
@@ -28,18 +28,25 @@ RAK811 RAKLoRa(ATSerial,DebugSerial);
 
 void setup() {
   DebugSerial.begin(115200);
-  while(DebugSerial.read()>= 0) {}
-  while(!DebugSerial);
-  DebugSerial.println("StartUP");
+  while(DebugSerial.available())
+  {
+    DebugSerial.read(); 
+  }
   
-  ATSerial.begin(115200); // Note: Please manually set the baud rate of the WisNode device to 115200.
+  ATSerial.begin(115200); //set ATSerial baudrate:This baud rate has to be consistent with  the baud rate of the WisNode device.
   while(ATSerial.available())
   {
     ATSerial.read(); 
   }
+
+  if(!RAKLoRa.rk_setWorkingMode(0))  //set WisNode work_mode to LoRaWAN.
+  {
+    DebugSerial.println("set work_mode failed, please reset module.");
+    while(1);
+  }
   
-  DebugSerial.println(RAKLoRa.rk_getVersion());  //get RAK811 firmware version
-  delay(200);
+  RAKLoRa.rk_getVersion();  //get RAK811 firmware version
+  DebugSerial.println(RAKLoRa.rk_recvData());  //print version number
 
   DebugSerial.println("Start init RAK811 parameters...");
   if(!RAKLoRa.rk_setSendinterval(0,0))  //close auto join and send to LoRaWAN
@@ -54,13 +61,14 @@ void setup() {
     while(1);
   }
 
-  DebugSerial.println("Start joining LoRaWAN...");
+  DebugSerial.println("Start to join LoRaWAN...");
   while(!RAKLoRa.rk_joinLoRaNetwork(60))  //Joining LoRaNetwork timeout 60s
   {
     DebugSerial.println();
     DebugSerial.println("Rejoin again after 5s...");
     delay(5000);
   }
+  DebugSerial.println("Join LoRaWAN success");
 
   if(!RAKLoRa.rk_isConfirm(0))  //set LoRa data send package type:0->unconfirm, 1->confirm
   {
@@ -71,7 +79,7 @@ void setup() {
 
 bool InitLoRaWAN(void)
 {
-  if(RAKLoRa.rk_setJoinMode(JOIN_MODE))
+  if(RAKLoRa.rk_setJoinMode(JOIN_MODE))  //set join_mode:OTAA
   {
     if(RAKLoRa.rk_setRegion(5))  //set region EU868
     {
@@ -93,8 +101,7 @@ void loop() {
     {
       String ret = RAKLoRa.rk_recvData();
       if(ret != NULL)
-      {
-        ret.trim();
+      { 
         DebugSerial.println(ret);
       }
       if((ret.indexOf("OK")>0)||(ret.indexOf("ERROR")>0))
