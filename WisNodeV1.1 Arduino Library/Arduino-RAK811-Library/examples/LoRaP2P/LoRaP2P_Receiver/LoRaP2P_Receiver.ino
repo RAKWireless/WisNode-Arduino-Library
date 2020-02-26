@@ -23,7 +23,7 @@ void setup() {
     DebugSerial.read(); 
   }
   
-  ATSerial.begin(115200); //set ATSerial baudrate:This baud rate has to be consistent with  the baud rate of the WisNode device.
+  ATSerial.begin(9600); //set ATSerial baudrate:This baud rate has to be consistent with  the baud rate of the WisNode device.
   while(ATSerial.available())
   {
     ATSerial.read(); 
@@ -31,19 +31,19 @@ void setup() {
 
   if(!RAKLoRa.rk_setWorkingMode(WORK_MODE))  //set WisNode work_mode to LoRaP2P.
   {
-    DebugSerial.println("set work_mode failed, please reset module.");
+    DebugSerial.println(F("set work_mode failed, please reset module."));
     while(1);
   }
   
   RAKLoRa.rk_getVersion();  //get RAK811 firmware version
   DebugSerial.println(RAKLoRa.rk_recvData());  //print version number
 
-  DebugSerial.println("Start init LoRaP2P parameters...");  
+  DebugSerial.println(F("Start init LoRaP2P parameters..."));  
   if (!RAKLoRa.rk_initP2P("869525000",12,0,1,8,20))  //init LoRaP2P
   {
-    DebugSerial.println("Init error,please reset module."); 
+    DebugSerial.println(F("Init error,please reset module.")); 
     while(1);
-  }else DebugSerial.println("Init OK");
+  }else DebugSerial.println(F("Init OK"));
 }
 
 void loop() {  

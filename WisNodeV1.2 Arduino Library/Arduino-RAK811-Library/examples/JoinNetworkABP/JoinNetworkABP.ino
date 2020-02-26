@@ -33,8 +33,7 @@ void setup() {
   {
     DebugSerial.read(); 
   }
-  
-  ATSerial.begin(115200); //set ATSerial baudrate:This baud rate has to be consistent with  the baud rate of the WisNode device.
+  ATSerial.begin(9600); //set ATSerial baudrate:This baud rate has to be consistent with  the baud rate of the WisNode device.
   while(ATSerial.available())
   {
     ATSerial.read(); 
@@ -42,38 +41,38 @@ void setup() {
 
   if(!RAKLoRa.rk_setWorkingMode(0))  //set WisNode work_mode to LoRaWAN.
   {
-    DebugSerial.println("set work_mode failed, please reset module.");
+    DebugSerial.println(F("set work_mode failed, please reset module."));
     while(1);
   }
   
   RAKLoRa.rk_getVersion();  //get RAK811 firmware version
   DebugSerial.println(RAKLoRa.rk_recvData());  //print version number
 
-  DebugSerial.println("Start init RAK811 parameters...");
+  DebugSerial.println(F("Start init RAK811 parameters..."));
   if(!RAKLoRa.rk_setSendinterval(0,0))  //close auto join and send to LoRaWAN
   {
-    DebugSerial.println("Close auto join and send to LoRaWAN failed, please reset module.");
+    DebugSerial.println(F("Close auto join and send to LoRaWAN failed, please reset module."));
     while(1);
   }
   
   if (!InitLoRaWAN())  //init LoRaWAN
   {
-    DebugSerial.println("Init error,please reset module."); 
+    DebugSerial.println(F("Init error,please reset module.")); 
     while(1);
   }
 
-  DebugSerial.println("Start to join LoRaWAN...");
+  DebugSerial.println(F("Start to join LoRaWAN..."));
   while(!RAKLoRa.rk_joinLoRaNetwork(60))  //Joining LoRaNetwork timeout 60s
   {
     DebugSerial.println();
-    DebugSerial.println("Rejoin again after 5s...");
+    DebugSerial.println(F("Rejoin again after 5s..."));
     delay(5000);
   }
-  DebugSerial.println("Join LoRaWAN success");
+  DebugSerial.println(F("Join LoRaWAN success"));
 
   if(!RAKLoRa.rk_isConfirm(0))  //set LoRa data send package type:0->unconfirm, 1->confirm
   {
-    DebugSerial.println("LoRa data send package set error,please reset module."); 
+    DebugSerial.println(F("LoRa data send package set error,please reset module.")); 
     while(1);    
   }
 }
@@ -86,7 +85,7 @@ bool InitLoRaWAN(void)
     {
       if (RAKLoRa.rk_initABP(DevAddr, NwkSKey, AppSKey))  //set ABP mode parameters
       {
-        DebugSerial.println("RAK811 init OK!");  
+        DebugSerial.println(F("RAK811 init OK!"));  
         return true;    
       }
     }
@@ -95,7 +94,7 @@ bool InitLoRaWAN(void)
 }
 
 void loop() {
-  DebugSerial.println("Start send data...");
+  DebugSerial.println(F("Start send data..."));
   if (RAKLoRa.rk_sendData(1, buffer))
   {    
     for (unsigned long start = millis(); millis() - start < 90000L;)
@@ -107,7 +106,7 @@ void loop() {
       }
       if((ret.indexOf("OK")>0)||(ret.indexOf("ERROR")>0))
       {
-        DebugSerial.println("Go to Sleep.");
+        DebugSerial.println(F("Go to Sleep."));
         RAKLoRa.rk_sleep(1);  //Set RAK811 enter sleep mode
         delay(10000);  //delay 10s
         RAKLoRa.rk_sleep(0);  //Wakeup RAK811 from sleep mode
