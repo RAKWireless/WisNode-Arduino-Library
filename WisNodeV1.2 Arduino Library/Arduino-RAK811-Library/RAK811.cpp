@@ -240,13 +240,13 @@ bool RAK811::rk_joinLoRaNetwork(int timeout)
   for (int i = 0; i <= timeout/2; i++)
   {
     ret = rk_recvData();
-    _serial1.print("<- " + ret);
     if (ret != NULL)
     {
+      _serial1.print("<- " + ret);
       if (ret.indexOf("OK") >= 0)
         return true;
-      else if(ret.indexOf("ERROR") >= 0)
-        return false;
+      // else if(ret.indexOf("ERROR") >= 0)
+      //   return false;
     }
   }
 
