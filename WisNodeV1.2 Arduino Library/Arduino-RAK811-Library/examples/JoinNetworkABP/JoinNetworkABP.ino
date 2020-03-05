@@ -49,12 +49,7 @@ void setup() {
   DebugSerial.println(RAKLoRa.rk_recvData());  //print version number
 
   DebugSerial.println(F("Start init RAK811 parameters..."));
-  if(!RAKLoRa.rk_setSendinterval(0,0))  //close auto join and send to LoRaWAN
-  {
-    DebugSerial.println(F("Close auto join and send to LoRaWAN failed, please reset module."));
-    while(1);
-  }
-  
+
   if (!InitLoRaWAN())  //init LoRaWAN
   {
     DebugSerial.println(F("Init error,please reset module.")); 
