@@ -4,14 +4,14 @@
 
 After completing the above steps, connect RAK WisNode to Arduino Uno, and connect RAK WisNode to the jumper as shown in the figure below.
 
-![2810122e4b001d3debe671a8e2a9579](E:\放文件\RUI\WisNode User Manual\image\2810122e4b001d3debe671a8e2a9579.png)
+[https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/V1.2_jump.png](https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents and tools/image/V1.2_jump.png)
 
-![19ffe886f106ed7d69d5c89f4cbb99c](E:\放文件\RUI\WisNode User Manual\image\19ffe886f106ed7d69d5c89f4cbb99c.png)
+[https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/merge_connect.png](https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents and tools/image/merge_connect.png)
 
 ### Test LoRa Node with LoRaWAN
 
 Server and serial console log:
 
-![LoRaWAN log](E:\放文件\RUI\WisNode User Manual\image\LoRaWAN log.png)
+[https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/LoRaWAN_log.png](https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents and tools/image/LoRaWAN_log.png)
 
 If the log does not display properly, it can be resolved by restarting the board.
