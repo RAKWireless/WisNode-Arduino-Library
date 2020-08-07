@@ -4,11 +4,11 @@
 
 After completing the above steps, connect RAK WisNode to Arduino Uno, and connect RAK WisNode to the jumper as shown in the figure below.
 
-<img src="E:\放文件\RUI\WisNode User Manual\image\d076f67eecc105cd5f63d20440657e4.png" alt="d076f67eecc105cd5f63d20440657e4" style="zoom:50%;" />
+<div align=center> <img src="https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/RAK811_jump_line.png" /> </div>
 
-<img src="E:\放文件\RUI\WisNode User Manual\image\Arduino mode v1.1.png" alt="Arduino mode v1.1" style="zoom:50%;" />
+<div align=center> <img src="https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/Arduino_mode_v1.1.png" /> </div>
 
-<img src="E:\放文件\RUI\WisNode User Manual\image\3310531c5fcb5be7e64d3b6b619cf60.jpg" alt="3310531c5fcb5be7e64d3b6b619cf60" style="zoom:50%;" />
+<div align=center> <img src="https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/arduino_connect_RAK811.jpg" /> </div>
 
 
 
@@ -18,8 +18,8 @@ After completing the above steps, connect RAK WisNode to Arduino Uno, and connec
 
 Server and serial console log:
 
-![8c4cca88dde4020a9a2976769c9e63a](E:\放文件\RUI\WisNode User Manual\image\8c4cca88dde4020a9a2976769c9e63a.png)
+<div align=center> <img src="https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/V1.1_log.png" /> </div>
 
-![868334c069d4e28fd0d050207c3047b](E:\放文件\RUI\WisNode User Manual\image\868334c069d4e28fd0d050207c3047b.png)
+<div align=center> <img src="https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/TTN_log.png" /> </div>
 
 If the log does not display properly, it can be resolved by restarting the board.

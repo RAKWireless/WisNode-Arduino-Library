@@ -22,25 +22,26 @@ The core of WisNode is the RAK811 LoRa module, and its interface is a universal 
    
 
    
+
 If you are using RAK811 WisNode in V1.1 version, please download RAK811 WisNode through this link:
-   
 
-   
+[https://github.com/RAKWireless/WisNode-Arduino-Library/tree/master/Documents%20and%20tools/WisNodeV1.1%20Arduino%20Library](https://github.com/RAKWireless/WisNode-Arduino-Library/tree/master/Documents and tools/WisNodeV1.1 Arduino Library)
+
 If you are using RAK811 WisNode in V1.2 version, please download RAK811 WisNode through this link:
-   
 
-   
+[https://github.com/RAKWireless/WisNode-Arduino-Library/tree/master/Documents%20and%20tools/WisNodeV1.2%20Arduino%20Library](https://github.com/RAKWireless/WisNode-Arduino-Library/tree/master/Documents and tools/WisNodeV1.2 Arduino Library)
+
    b. Copy to the Arduino library directory, usually it's in `C:\Users\<UserName>\Documents\Arduino\libraries` for Windows, and in `~/Documents/Arduino/libraries/` for Linux and Mac OS X.
-   
-   ![Library directory](image/Library directory.png)
-   
+
+<div align=center> <img src="https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/Library_directory.png" /> </div>
+
    c. Reopen the Arduino IDE, you can see `Arduino-RAK811-Library` in the menu, indicating that the library is successfully installed.
-   
-   ![Library in the menu](image/Library in the menu.png)
-   
+
+  <div align=center> <img src="https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/Library_in_the_menu.png" /> </div>
+
    d. Before compiling the routine, you need to modify the serial port configuration of the development board. Open the Arduino IDE installation directory, find the `<Arduino_installation_directory>\hardware\arduino\avr\cores\arduino\HardwareSerial.h` file, and modify the size of the serial port receiving and sending buffers.
-   
-   ![Serial port configuration modification](image/Serial port configuration modification.png)
+
+   <div align=center> <img src="https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/Serial_port_configuration_modification.png" /> </div>
 
 ### RAK811
 
@@ -58,15 +59,15 @@ If you are using RAK811 WisNode in V1.2 version, please download RAK811 WisNode 
 
 3. jump the “BOOT” pin and “3V3” pin for boot mode as following:
 
-   ![微信图片_20200807110601](E:\放文件\RUI\WisNode User Manual\image\微信图片_20200807110601.png)
+   <div align=center> <img src="https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/jump_boot.png" /> </div>
 
 4. Connect RAK811 WisNode with your PC’s USB interface, Open the “STM32CubeProgrammer” tool, and select UART type, then configure the Port, Baudrate, and Pairty .Then press “Connect” button at the top right corner.
 
-   ![image-20200807102503737](E:\放文件\RUI\WisNode User Manual\image\image-20200807102503737.png)
+   <div align=center> <img src="https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/connect_STM32cubeprogrammer.png" /> </div>
 
 5. Press “Open file” and selectthe WisNode-Arduino version hex file in the pop-up window,And press the “Download” button to start the burning process:
 
-   ![image-20200807102633251](E:\放文件\RUI\WisNode User Manual\image\image-20200807102633251.png)
+   <div align=center> <img src="https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/burn_firmware.png" /> </div>
 
 6. Burn successfully, restore to the initial state.
 
@@ -80,15 +81,15 @@ RAKWireless provides LoRaWAN communication routines for WisNode, including OTAA 
 
 Compile the code, download it to the target board, and see the log from the Arduino serial monitor.
 
-![Download Firmware.png](image/Download Firmware.png)
+<div align=center> <img src="https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/Download_Firmware.png" /> </div>
 
 ### Hardware Configuration
 
 After completing the above steps, connect RAK WisNode to Arduino Uno, and connect RAK WisNode to the jumper as shown in the figure below.
 
-![Arduino mode v1.3.png](image/Arduino mode v1.3.png)
+<div align=center> <img src="https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/Arduino_mode_v1.3.png" /> </div>
 
-![3310531c5fcb5be7e64d3b6b619cf60](E:\放文件\RUI\WisNode User Manual\image\3310531c5fcb5be7e64d3b6b619cf60.jpg)
+<div align=center> <img src="https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/merge_connect.png" /> </div>
 
 ps:Since there are two other previous versions of the RAK Wisnode hardware,to accommodate all users, here are the other two versions of the connection and the success stories.
 
@@ -96,11 +97,11 @@ ps:Since there are two other previous versions of the RAK Wisnode hardware,to ac
 
 If your Version of RAK WisNode is V1.1, see how to connect in this link:
 
-
+[https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/WisNodeV1.1%20Arduino%20Library/RAK811%20WisNode%20V1.1%20Hardware%20.md](https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents and tools/WisNodeV1.1 Arduino Library/RAK811 WisNode V1.1 Hardware .md)
 
 If your Version of RAK WisNode is V1.2, see how to connect in this link:
 
-
+[https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/WisNodeV1.2%20Arduino%20Library/RAK811%20WisNode%20V1.2%20Hardware.md](https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents and tools/WisNodeV1.2 Arduino Library/RAK811 WisNode V1.2 Hardware.md)
 
 
 
@@ -108,7 +109,7 @@ If your Version of RAK WisNode is V1.2, see how to connect in this link:
 
 Server and serial console log:
 
-![LoRaWAN log.png](image/LoRaWAN log.png)
+<div align=center> <img src="https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/LoRaWAN_log.png" /> </div>
 
 If the log does not display properly, it can be resolved by restarting the board.
 
