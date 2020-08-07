@@ -4,9 +4,9 @@
 
 After completing the above steps, connect RAK WisNode to Arduino Uno, and connect RAK WisNode to the jumper as shown in the figure below.
 
-[https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/V1.2_jump.png](https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents and tools/image/V1.2_jump.png)
+<div align=center> <img src="[https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/V1.2_jump.png](https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents and tools/image/V1.2_jump.png)" /> </div>
 
-[https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/merge_connect.png](https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents and tools/image/merge_connect.png)
+<div align=center> <img src="[https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/merge_connect.png](https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents and tools/image/merge_connect.png)" /> </div>
 
 ### Test LoRa Node with LoRaWAN
 
