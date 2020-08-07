@@ -20,25 +20,22 @@ To develop Arduino program, you can refer to the API manual:[WisNode_Arduino_Lib
 
    a. Download the `Arduino-RAK811-Library folder` in the repository.
    
-
-   
-
 If you are using RAK811 WisNode in V1.1 version, please download RAK811 WisNode through this link:
-
-https://github.com/RAKWireless/WisNode-Arduino-Library/tree/master/Documents%20and%20tools/WisNodeV1.1%20Arduino%20Library
-
-If you are using RAK811 WisNode in V1.2 version, please download RAK811 WisNode through this link:
-
-https://github.com/RAKWireless/WisNode-Arduino-Library/tree/master/Documents%20and%20tools/WisNodeV1.2%20Arduino%20Library
-
+   
+   https://github.com/RAKWireless/WisNode-Arduino-Library/tree/master/Documents%20and%20tools/WisNodeV1.1%20Arduino%20Library
+   
+   If you are using RAK811 WisNode in V1.2 version, please download RAK811 WisNode through this link:
+   
+   https://github.com/RAKWireless/WisNode-Arduino-Library/tree/master/Documents%20and%20tools/WisNodeV1.2%20Arduino%20Library
+   
    b. Copy to the Arduino library directory, usually it's in `C:\Users\<UserName>\Documents\Arduino\libraries` for Windows, and in `~/Documents/Arduino/libraries/` for Linux and Mac OS X.
-
-<div align=center> <img src="https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/Library_directory.png" /> </div>
-
+   
+   <div align=center> <img src="https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/Library_directory.png" /> </div>
+   
    c. Reopen the Arduino IDE, you can see `Arduino-RAK811-Library` in the menu, indicating that the library is successfully installed.
-
-  <div align=center> <img src="https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/Library_in_the_menu.png" /> </div>
-
+   
+     <div align=center> <img src="https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/Library_in_the_menu.png" /> </div>
+   
    d. Before compiling the routine, you need to modify the serial port configuration of the development board. Open the Arduino IDE installation directory, find the `<Arduino_installation_directory>\hardware\arduino\avr\cores\arduino\HardwareSerial.h` file, and modify the size of the serial port receiving and sending buffers.
 
    <div align=center> <img src="https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/image/Serial_port_configuration_modification.png" /> </div>
