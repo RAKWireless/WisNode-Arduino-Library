@@ -25,11 +25,11 @@ To develop Arduino program, you can refer to the API manual:[WisNode_Arduino_Lib
 
 If you are using RAK811 WisNode in V1.1 version, please download RAK811 WisNode through this link:
 
-([https://github.com/RAKWireless/WisNode-Arduino-Library/tree/master/Documents%20and%20tools/WisNodeV1.1%20Arduino%20Library])
+https://github.com/RAKWireless/WisNode-Arduino-Library/tree/master/Documents%20and%20tools/WisNodeV1.1%20Arduino%20Library
 
 If you are using RAK811 WisNode in V1.2 version, please download RAK811 WisNode through this link:
 
-([https://github.com/RAKWireless/WisNode-Arduino-Library/tree/master/Documents%20and%20tools/WisNodeV1.2%20Arduino%20Library])
+https://github.com/RAKWireless/WisNode-Arduino-Library/tree/master/Documents%20and%20tools/WisNodeV1.2%20Arduino%20Library
 
    b. Copy to the Arduino library directory, usually it's in `C:\Users\<UserName>\Documents\Arduino\libraries` for Windows, and in `~/Documents/Arduino/libraries/` for Linux and Mac OS X.
 
@@ -97,11 +97,11 @@ ps:Since there are two other previous versions of the RAK Wisnode hardware,to ac
 
 If your Version of RAK WisNode is V1.1, see how to connect in this link:
 
-([https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/WisNodeV1.1%20Arduino%20Library/RAK811%20WisNode%20V1.1%20Hardware.md])
+https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/WisNodeV1.1%20Arduino%20Library/RAK811%20WisNode%20V1.1%20Hardware.md
 
 If your Version of RAK WisNode is V1.2, see how to connect in this link:
 
-([https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/WisNodeV1.2%20Arduino%20Library/RAK811%20WisNode%20V1.2%20Hardware.md])
+https://github.com/RAKWireless/WisNode-Arduino-Library/blob/master/Documents%20and%20tools/WisNodeV1.2%20Arduino%20Library/RAK811%20WisNode%20V1.2%20Hardware.md
 
 
 
