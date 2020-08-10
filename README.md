@@ -51,7 +51,13 @@ To develop Arduino program, you can refer to the API manual:[WisNode_Arduino_Lib
 
 2. Please download the WisNode-Arduino version of the firmware from here：
 
-   
+   https://github.com/RAKWireless/WisNode-Arduino-Library/tree/master/Documents%20and%20tools/WisNode-Arduino%20version-Firmware
+
+   ps：The firmware version has H and L distinction, which corresponds to different frequencies available.
+
+   WisNode-Arduino version-H：EU868、IN865、US915、AU915、KR920、AS923
+
+   WisNode-Arduino version-L：EU433、CN470
 
 3. jump the “BOOT” pin and “3V3” pin for boot mode as following:
 
