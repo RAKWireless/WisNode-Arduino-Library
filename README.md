@@ -20,6 +20,8 @@ To develop Arduino program, you can refer to the API manual:[WisNode_Arduino_Lib
 
    a. Download the `Arduino-RAK811-Library folder` in the repository.
    
+   The current warehouse supports version RAK811 WisNode V1.3.
+   
    If you are using RAK811 WisNode in V1.1 version, please download RAK811 WisNode through this link:
    
       https://github.com/RAKWireless/WisNode-Arduino-Library/tree/master/Documents%20and%20tools/WisNodeV1.1%20Arduino%20Library
