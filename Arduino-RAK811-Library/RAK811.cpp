@@ -390,50 +390,6 @@ bool RAK811::rk_sendDataASCII(int port, char *dataASCII, uint8_t PAYLOAD_LENGTH)
   return true;  
 }
 
-// bool RAK811::rk_sendData(int port, char *datahex)
-// {
-//   // String command = "";
-//   command = "at+send=lora:" + (String)port + ":";// + datahex;
-//   // _serial1.println(command);
-
-//   float resistance = 123.45;
-//   char res[7];
-//   dtostrf(resistance, 6, 2, res);
-
-//   char hi[3] = {0};
-//   hi[0] = 'h';
-//   hi[1] = 'i';
-//   hi[2] = '\0';
-
-//   char buffer[strlen(hi) + strlen(res) + 1];
-//   sprintf(buffer, "%s:%s", hi, res);
-
-//   Serial.println(buffer);
-
-//   command = command;// + converter(teste);
-//   Serial.println(command);
-
-//   while (_serial.available())
-//   {
-//     _serial.read();
-//   }
-//   //_serial1.println(cmd);
-//   _serial.print(command);
-
-//   for(int i=0;i<(strlen(hi) + strlen(res) + 1);i++){
-//     _serial.print(buffer[i], HEX);
-//   }
-//   _serial.println("");
-
-
-//   delay(200);
-//   return true;
-  
-//   //sendRawCommand(command);
-
-//   return true;  
-// }
-
 bool RAK811::rk_sendData(int port, char *datahex)
 {
   // String command = "";
