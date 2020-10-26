@@ -6,14 +6,13 @@
 #include "RAK811.h"
 #include "SoftwareSerial.h"
 #define WORK_MODE LoRaWAN   //  LoRaWAN or LoRaP2P
-#define JOIN_MODE ABP    //  OTAA or ABP
+#define JOIN_MODE OTAA    //  OTAA or ABP
 #if JOIN_MODE == OTAA
 String DevEui = "8680000000000001";
 String AppEui = "70B3D57ED00285A7";
 String AppKey = "DDDFB1023885FBFF74D3A55202EDF2B1";
 #else JOIN_MODE == ABP
 String NwkSKey = "69AF20AEA26C01B243945A28C9172B42";
-
 String AppSKey = "841986913ACD00BBC2BE2479D70F3228";
 String DevAddr = "260125D7";
 #endif
@@ -21,11 +20,12 @@ String DevAddr = "260125D7";
 #define RXpin 10
 #define DebugSerial Serial
 SoftwareSerial ATSerial(RXpin,TXpin);    // Declare a virtual serial port
-char buffer[]= "72616B776972656C657373";
+char buffer[60] = {0};
+char res[15];
+char hi[3] = {'h','i', '\0'};
 
 bool InitLoRaWAN(void);
-RAK811 RAKLoRa(ATSerial,DebugSerial);
-
+RAK811 RAKLoRa(ATSerial,DebugSerial); 
 
 void setup() {
   DebugSerial.begin(115200);
@@ -33,23 +33,28 @@ void setup() {
   {
     DebugSerial.read(); 
   }
-  ATSerial.begin(9600); //set ATSerial baudrate:This baud rate has to be consistent with  the baud rate of the WisNode device.
+
+  while(!DebugSerial) delay(10);
+  Serial.println("RAK811: Join Network OTAA Example");
+  
+  ATSerial.begin(115200); //set ATSerial baudrate:This baud rate has to be consistent with  the baud rate of the WisNode device.
   while(ATSerial.available())
   {
     ATSerial.read(); 
   }
 
-  if(!RAKLoRa.rk_setWorkingMode(0))  //set WisNode work_mode to LoRaWAN.
-  {
-    DebugSerial.println(F("set work_mode failed, please reset module."));
-    while(1);
-  }
+  RAKLoRa.rk_setWorkingMode(0);
+  //if(!RAKLoRa.rk_setWorkingMode(0))  //set WisNode work_mode to LoRaWAN.
+  //{
+  //  DebugSerial.println(F("set work_mode failed, please reset module."));
+  //  while(1);
+  //}
   
   RAKLoRa.rk_getVersion();  //get RAK811 firmware version
   DebugSerial.println(RAKLoRa.rk_recvData());  //print version number
 
   DebugSerial.println(F("Start init RAK811 parameters..."));
-
+ 
   if (!InitLoRaWAN())  //init LoRaWAN
   {
     DebugSerial.println(F("Init error,please reset module.")); 
@@ -74,11 +79,11 @@ void setup() {
 
 bool InitLoRaWAN(void)
 {
-  if(RAKLoRa.rk_setJoinMode(JOIN_MODE))  //set join_mode:ABP
+  if(RAKLoRa.rk_setJoinMode(JOIN_MODE))  //set join_mode:OTAA
   {
-    if(RAKLoRa.rk_setRegion(5))  //set region EU868
+    if(RAKLoRa.rk_setRegion(1))  //set region AU915
     {
-      if (RAKLoRa.rk_initABP(DevAddr, NwkSKey, AppSKey))  //set ABP mode parameters
+      if (RAKLoRa.rk_initOTAA(DevEui, AppEui, AppKey))
       {
         DebugSerial.println(F("RAK811 init OK!"));  
         return true;    
@@ -89,23 +94,22 @@ bool InitLoRaWAN(void)
 }
 
 void loop() {
+  // ATENTION: You will receive the voltage as int and need to divide by 100 to get the actual value
+  int voltage = (int)((analogRead(A1)+250) * (3.3/1023.0) * 100);
+  itoa(voltage, vol, 10);
+  sprintf(buffer, "%s:%s", hi, vol);
+
+  DebugSerial.print("Resistance: "); DebugSerial.println(voltage/100.);
+  
   DebugSerial.println(F("Start send data..."));
-  if (RAKLoRa.rk_sendData(1, buffer))
+  if (RAKLoRa.rk_sendDataASCII(1, buffer, strlen(buffer)))
   {    
-    for (unsigned long start = millis(); millis() - start < 90000L;)
+    for (unsigned long start = millis(); millis() - start < 60000L;)
     {
       String ret = RAKLoRa.rk_recvData();
       if(ret != "")
       { 
         DebugSerial.println(ret);
-      }
-      if((ret.indexOf("OK")>0)||(ret.indexOf("ERROR")>0))
-      {
-        DebugSerial.println(F("Go to Sleep."));
-        RAKLoRa.rk_sleep(1);  //Set RAK811 enter sleep mode
-        delay(10000);  //delay 10s
-        RAKLoRa.rk_sleep(0);  //Wakeup RAK811 from sleep mode
-        break;
       }
     }
   }

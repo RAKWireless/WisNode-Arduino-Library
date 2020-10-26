@@ -95,7 +95,7 @@ void loop() {
     for (unsigned long start = millis(); millis() - start < 90000L;)
     {
       String ret = RAKLoRa.rk_recvData();
-      if(ret != NULL)
+      if(ret != "")
       { 
         DebugSerial.println(ret);
       }
