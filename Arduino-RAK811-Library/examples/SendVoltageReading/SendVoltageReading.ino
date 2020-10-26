@@ -20,11 +20,12 @@ String DevAddr = "260125D7";
 #define RXpin 10
 #define DebugSerial Serial
 SoftwareSerial ATSerial(RXpin,TXpin);    // Declare a virtual serial port
-char buffer[]= "72616B776972656C657373";
+char buffer[60] = {0};
+char res[15];
+char hi[3] = {'h','i', '\0'};
 
 bool InitLoRaWAN(void);
-RAK811 RAKLoRa(ATSerial,DebugSerial);
-
+RAK811 RAKLoRa(ATSerial,DebugSerial); 
 
 void setup() {
   DebugSerial.begin(115200);
@@ -32,8 +33,11 @@ void setup() {
   {
     DebugSerial.read(); 
   }
+
+  while(!DebugSerial) delay(10);
+  Serial.println("RAK811: Join Network OTAA Example");
   
-  ATSerial.begin(9600); //set ATSerial baudrate:This baud rate has to be consistent with  the baud rate of the WisNode device.
+  ATSerial.begin(115200); //set ATSerial baudrate:This baud rate has to be consistent with  the baud rate of the WisNode device.
   while(ATSerial.available())
   {
     ATSerial.read(); 
@@ -75,7 +79,7 @@ bool InitLoRaWAN(void)
 {
   if(RAKLoRa.rk_setJoinMode(JOIN_MODE))  //set join_mode:OTAA
   {
-    if(RAKLoRa.rk_setRegion(5))  //set region EU868
+    if(RAKLoRa.rk_setRegion(1))  //set region AU915
     {
       if (RAKLoRa.rk_initOTAA(DevEui, AppEui, AppKey))
       {
@@ -88,23 +92,22 @@ bool InitLoRaWAN(void)
 }
 
 void loop() {
+  // ATENTION: You will receive the voltage as int and need to divide by 100 to get the actual value
+  int voltage = (int)((analogRead(A1)) * (3.3/1023.0) * 100);
+  itoa(voltage, vol, 10);
+  sprintf(buffer, "%s:%s", hi, vol);
+
+  DebugSerial.print("Resistance: "); DebugSerial.println(voltage/100.);
+  
   DebugSerial.println(F("Start send data..."));
-  if (RAKLoRa.rk_sendData(1, buffer))
+  if (RAKLoRa.rk_sendDataASCII(1, buffer, strlen(buffer)))
   {    
-    for (unsigned long start = millis(); millis() - start < 90000L;)
+    for (unsigned long start = millis(); millis() - start < 60000L;)
     {
       String ret = RAKLoRa.rk_recvData();
       if(ret != "")
       { 
         DebugSerial.println(ret);
-      }
-      if((ret.indexOf("OK")>0)||(ret.indexOf("ERROR")>0))
-      {
-        DebugSerial.println(F("Go to Sleep."));
-        RAKLoRa.rk_sleep(1);  //Set RAK811 enter sleep mode
-        delay(10000);  //delay 10s
-        RAKLoRa.rk_sleep(0);  //Wakeup RAK811 from sleep mode
-        break;
       }
     }
   }

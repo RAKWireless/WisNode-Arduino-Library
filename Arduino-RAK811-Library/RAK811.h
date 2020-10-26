@@ -146,6 +146,15 @@ class RAK811
   */
   bool rk_sendData( int port, char* datahex);
 
+  /*
+  * After joining the network, send the packet at the specified application port.
+  * port : The port number.(1-223)
+  * dataASCII : ascii char array to be sent. max 64 byte.
+  * PAYLOAD_LENGTH: max size of your dataASCII, example char dataASCII[PAYLOAD_LENGTH];
+  * This function can only be used in module work in LoRaWAN mode.
+  */
+  bool rk_sendDataASCII( int port, char *dataASCII, uint8_t PAYLOAD_LENGTH);
+
 /*
   * LoRa data send package type.
   * type : 0->unconfirm, 1->confirm
@@ -200,11 +209,21 @@ class RAK811
 
  /*
   * Send a raw command to the RAK811 module.
-  * //Returns the raw string as received back from the RAK811.
   * Return true,send OK
   * If the RAK811 replies with multiple line, only the first line will be returned.
   */
   bool sendRawCommand(String command);
+
+  /*
+  * Send a raw command to the RAK811 module.
+  * Return true, send OK
+  * cmd: at comand to be sent, check rak documentation
+  * payloadASCII: your char array with the payloadASCII
+  * PAYLOAD_LENGTH: chat array size
+  * If the RAK811 replies with multiple line, only the first line will be returned.
+  */
+  bool sendRawCommand(String cmd, char *payloadASCII, uint8_t PAYLOAD_LENGTH);
+
 
   private:
   Stream& _serial;

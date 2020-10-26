@@ -41,8 +41,7 @@ void setup() {
 
   if(!RAKLoRa.rk_setWorkingMode(0))  //set WisNode work_mode to LoRaWAN.
   {
-    DebugSerial.println(F("set work_mode failed, please reset module."));
-    while(1);
+    DebugSerial.println(F("set work_mode failed. The device only every needs this doing once."));
   }
   
   RAKLoRa.rk_getVersion();  //get RAK811 firmware version
@@ -95,7 +94,7 @@ void loop() {
     for (unsigned long start = millis(); millis() - start < 90000L;)
     {
       String ret = RAKLoRa.rk_recvData();
-      if(ret != NULL)
+      if(ret != "")
       { 
         DebugSerial.println(ret);
       }

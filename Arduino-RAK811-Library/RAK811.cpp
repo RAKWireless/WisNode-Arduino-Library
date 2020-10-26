@@ -189,7 +189,6 @@ bool RAK811::rk_setWorkingMode(int mode)
   for(int i=0; i<10; i++)
   {
     ret = rk_recvData();
-    // _serial1.println(ret);
     if ((ret.indexOf("Initialization OK") >= 0) || (ret.indexOf("No switch work_mode") >= 0))
     {
       return true;
@@ -383,6 +382,14 @@ bool RAK811::rk_isConfirm(int type)
   }
 }
 
+bool RAK811::rk_sendDataASCII(int port, char *dataASCII, uint8_t PAYLOAD_LENGTH)
+{ 
+  command = "at+send=lora:" + (String)port + ":";
+  sendRawCommand(command, dataASCII, PAYLOAD_LENGTH);
+
+  return true;  
+}
+
 bool RAK811::rk_sendData(int port, char *datahex)
 {
   // String command = "";
@@ -473,3 +480,26 @@ bool RAK811::sendRawCommand(String cmd)
   delay(200);
   return true;
 }
+
+bool RAK811::sendRawCommand(String cmd, char *payloadASCII, uint8_t PAYLOAD_LENGTH)
+{
+  while (_serial.available())
+  {
+    _serial.read();
+  }
+
+  _serial.print(cmd);
+  for(uint8_t i=0; i<PAYLOAD_LENGTH; i++)
+  {
+    if(payloadASCII[i] == '\0')
+    {
+      break;
+    }
+    _serial.print(payloadASCII[i], HEX);
+  }
+  _serial.println(""); //is it needed?
+
+  delay(200);
+  return true;
+}
+
