@@ -43,12 +43,10 @@ void setup() {
     ATSerial.read(); 
   }
 
-  RAKLoRa.rk_setWorkingMode(0);
-  //if(!RAKLoRa.rk_setWorkingMode(0))  //set WisNode work_mode to LoRaWAN.
-  //{
-  //  DebugSerial.println(F("set work_mode failed, please reset module."));
-  //  while(1);
-  //}
+  if(!RAKLoRa.rk_setWorkingMode(0))  //set WisNode work_mode to LoRaWAN.
+  {
+    DebugSerial.println(F("set work_mode failed. The device only every needs this doing once."));
+  }
   
   RAKLoRa.rk_getVersion();  //get RAK811 firmware version
   DebugSerial.println(RAKLoRa.rk_recvData());  //print version number
@@ -95,7 +93,7 @@ bool InitLoRaWAN(void)
 
 void loop() {
   // ATENTION: You will receive the voltage as int and need to divide by 100 to get the actual value
-  int voltage = (int)((analogRead(A1)+250) * (3.3/1023.0) * 100);
+  int voltage = (int)((analogRead(A1)) * (3.3/1023.0) * 100);
   itoa(voltage, vol, 10);
   sprintf(buffer, "%s:%s", hi, vol);
 
